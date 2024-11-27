@@ -1,0 +1,59 @@
+# Banco de Dados da Escola
+
+Este projeto contém a implementação de um banco de dados para gerenciar as informações de uma escola. Ele inclui tabelas para armazenar dados sobre estudantes, professores, turmas e notas. O banco de dados foi criado com o objetivo de gerenciar os dados escolares de forma eficiente e organizada.
+
+## Estrutura do Banco de Dados
+
+O banco de dados contém as seguintes tabelas:
+
+1. **Estudante**: Armazena informações dos estudantes (nome, data de nascimento e turma).
+2. **Professor**: Contém os dados dos professores (nome e disciplina que lecionam).
+3. **Turma**: Registra as turmas e o professor responsável por cada uma delas.
+4. **Nota**: Armazena as notas dos estudantes por turma.
+
+### Tabelas e suas colunas
+
+- **Estudante**
+  - id_estudante (INT)
+  - nome (VARCHAR)
+  - data_nascimento (DATE)
+  - turma (VARCHAR)
+
+- **Professor**
+  - id_professor (INT)
+  - nome (VARCHAR)
+  - disciplina (VARCHAR)
+
+- **Turma**
+  - id_turma (INT)
+  - nome_turma (VARCHAR)
+  - id_professor (INT) - Chave estrangeira referenciando o professor responsável
+
+- **Nota**
+  - id_nota (INT)
+  - id_estudante (INT) - Chave estrangeira referenciando o estudante
+  - id_turma (INT) - Chave estrangeira referenciando a turma
+  - nota (DECIMAL)
+
+### Consultas
+
+O banco de dados permite realizar as seguintes consultas:
+
+1. **Listar as notas dos alunos em cada turma.**
+2. **Exibir os professores responsáveis por cada turma.**
+3. **Mostrar a média de notas por turma.**
+
+### Como usar
+
+1. Crie o banco de dados e as tabelas no seu ambiente MySQL ou MariaDB.
+2. Insira os dados de exemplo usando as instruções `INSERT` fornecidas.
+3. Realize as consultas para obter as informações desejadas.
+
+### Pré-requisitos
+
+- MySQL ou MariaDB instalado.
+- Cliente de banco de dados como MySQL Workbench, DBeaver, ou linha de comando.
+
+### Licença
+
+Este projeto está sob a Licença MIT. Veja o arquivo LICENSE para mais detalhes.

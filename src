@@ -1,0 +1,117 @@
+-- Criação do banco de dados
+CREATE DATABASE IF NOT EXISTS Restaurante;
+USE Restaurante;
+
+-- Criação da tabela de Clientes
+CREATE TABLE IF NOT EXISTS Cliente (
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY,  -- Identificador único do cliente
+    nome VARCHAR(150) NOT NULL,                 -- Nome do cliente
+    telefone VARCHAR(15) NOT NULL               -- Telefone do cliente
+);
+
+-- Criação da tabela de Pratos
+CREATE TABLE IF NOT EXISTS Prato (
+    id_prato INT AUTO_INCREMENT PRIMARY KEY,   -- Identificador único do prato
+    nome VARCHAR(150) NOT NULL,                 -- Nome do prato
+    preco DECIMAL(10, 2) NOT NULL               -- Preço do prato
+);
+
+-- Criação da tabela de Pedidos
+CREATE TABLE IF NOT EXISTS Pedido (
+    id_pedido INT AUTO_INCREMENT PRIMARY KEY,  -- Identificador único do pedido
+    id_cliente INT NOT NULL,                    -- ID do cliente
+    data_pedido DATETIME NOT NULL,              -- Data do pedido
+    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente) ON DELETE CASCADE  -- Relacionamento com Cliente
+);
+
+-- Criação da tabela de Itens de Pedido
+CREATE TABLE IF NOT EXISTS Item (
+    id_item INT AUTO_INCREMENT PRIMARY KEY,     -- Identificador único do item
+    id_pedido INT NOT NULL,                      -- ID do pedido
+    id_prato INT NOT NULL,                       -- ID do prato
+    quantidade INT NOT NULL,                     -- Quantidade do prato
+    FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido) ON DELETE CASCADE,  -- Relacionamento com Pedido
+    FOREIGN KEY (id_prato) REFERENCES Prato(id_prato) ON DELETE CASCADE      -- Relacionamento com Prato
+);
+
+-- Inserção de dados para Clientes
+INSERT INTO Cliente (nome, telefone)
+VALUES
+    ('João Silva', '123456789'),
+    ('Maria Oliveira', '234567890'),
+    ('Carlos Souza', '345678901'),
+    ('Ana Costa', '456789012'),
+    ('Tatiane Rocha', '567890123');
+
+-- Inserção de dados para Pratos
+INSERT INTO Prato (nome, preco)
+VALUES
+    ('Pizza Margherita', 25.00),
+    ('Lasanha', 30.00),
+    ('Hambúrguer', 20.00),
+    ('Sushi', 40.00),
+    ('Salada', 15.00);
+
+-- Inserção de dados para Pedidos
+INSERT INTO Pedido (id_cliente, data_pedido)
+VALUES
+    (1, '2024-11-25 19:00:00'),
+    (2, '2024-11-26 20:30:00'),
+    (3, '2024-11-27 18:00:00');
+
+-- Inserção de dados para Itens de Pedido
+INSERT INTO Item (id_pedido, id_prato, quantidade)
+VALUES
+    (1, 1, 2),  -- 2 Pizzas Margherita
+    (1, 3, 1),  -- 1 Hambúrguer
+    (2, 2, 3),  -- 3 Lasanhas
+    (2, 5, 1),  -- 1 Salada
+    (3, 4, 2);  -- 2 Sushi
+
+-- Consulta 1: Listar todos os pedidos com os respectivos clientes e pratos
+SELECT 
+    c.nome AS cliente,
+    p.nome AS prato,
+    i.quantidade,
+    p.preco,
+    (i.quantidade * p.preco) AS total_item
+FROM 
+    Pedido pd
+JOIN 
+    Cliente c ON pd.id_cliente = c.id_cliente
+JOIN 
+    Item i ON pd.id_pedido = i.id_pedido
+JOIN 
+    Prato p ON i.id_prato = p.id_prato
+ORDER BY 
+    pd.data_pedido;
+
+-- Consulta 2: Exibir o total gasto por cada cliente
+SELECT 
+    c.nome AS cliente,
+    SUM(i.quantidade * p.preco) AS total_gasto
+FROM 
+    Cliente c
+JOIN 
+    Pedido pd ON c.id_cliente = pd.id_cliente
+JOIN 
+    Item i ON pd.id_pedido = i.id_pedido
+JOIN 
+    Prato p ON i.id_prato = p.id_prato
+GROUP BY 
+    c.id_cliente
+ORDER BY 
+    total_gasto DESC;
+
+-- Consulta 3: Mostrar os pratos mais vendidos
+SELECT 
+    p.nome AS prato,
+    SUM(i.quantidade) AS total_vendido
+FROM 
+    Item i
+JOIN 
+    Prato p ON i.id_prato = p.id_prato
+GROUP BY 
+    p.id_prato
+ORDER BY 
+    total_vendido DESC;

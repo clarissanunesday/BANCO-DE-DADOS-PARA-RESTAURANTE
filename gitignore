@@ -1,0 +1,26 @@
+# Ignorar arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar arquivos temporários de editores de texto
+*.swp
+*.swo
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar arquivos de backup
+*.bak
+*.sql~
+*.dump
+
+# Ignorar arquivos específicos do IDE (exemplo para Visual Studio Code)
+.vscode/
+
+# Ignorar pastas de dependências (exemplo para projetos Node.js, caso esteja utilizando)
+node_modules/
+
+# Outros arquivos gerados localmente que não precisam ser versionados
+*.iml
+.idea/
+*.env
